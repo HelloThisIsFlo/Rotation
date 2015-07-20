@@ -9,6 +9,7 @@ import android.view.animation.Animation;
 import android.view.animation.OvershootInterpolator;
 import android.view.animation.RotateAnimation;
 import android.view.animation.Transformation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 
@@ -17,9 +18,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    ImageView mMinion1;
-    ImageView mMinion2;
-    SeekBar mSeekBar;
+    private ImageView mMinion1;
+    private ImageView mMinion2;
+    private SeekBar mSeekBar;
+    private Button mRotateButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         mMinion1 = (ImageView) findViewById(R.id.minion_1_image_view);
         mMinion2 = (ImageView) findViewById(R.id.minion_2_image_view);
         mSeekBar = (SeekBar) findViewById(R.id.rotation_seek_bar);
+        mRotateButton = (Button) findViewById(R.id.rotate_button);
 
 
         // Set the camera distance to give a more natural flip movement
@@ -40,75 +43,42 @@ public class MainActivity extends AppCompatActivity {
         mMinion1.setCameraDistance(distance * scale);
         mMinion2.setCameraDistance(distance * scale);
 
+
         mSeekBar.setMax(180);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                applyAnimation(mMinion1);
+                mMinion1.setRotation(progress);
             }
 
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {}
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {}
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
+
+
+        mRotateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                applyAnimation(mMinion1);
+            }
         });
 
     }
 
     private void applyAnimation(View v){
-        MyAnimation myAnimation = new MyAnimation(v);
+        CustomRotationAnimation myAnimation = new CustomRotationAnimation(v);
         myAnimation.setDuration(5000);
-        myAnimation.setFillAfter(true);
-        myAnimation.setInterpolator(new OvershootInterpolator());
 
         v.startAnimation(myAnimation);
     }
 
-    public class MyAnimation extends Animation {
-
-        float centerX;
-        float centerY;
-
-        public MyAnimation(View view) {
-            centerX = Math.abs((view.getRight() - view.getLeft()) / 2);
-            centerY = Math.abs((view.getTop() - view.getBottom()) / 2);
-        }
-
-        @Override
-        protected void applyTransformation(float interpolatedTime,
-                                           Transformation t) {
-
-            final Matrix matrix = t.getMatrix();
-
-//            matrix.postRotate(30);
-            float[] values = new float[9];
-            matrix.getValues(values);
-
-            for (float v : values) {
-                Log.d("test", "Value : " + v);
-            }
-            Log.d("test", "-----------");
-            double angleRad = Math.toRadians(90*interpolatedTime);
-            float cos = (float) Math.cos(angleRad);
-            float sin = (float) Math.sin(angleRad);
-            matrix.setValues(new float[]{cos, -sin, 0, sin, cos, 0, 0, 0, 1});
-
-            matrix.preTranslate(-centerX, -centerY);
-            matrix.postTranslate(centerX, centerY);
-
-            Log.d("test", "cos = " + cos);
-            Log.d("test", "sin = " + sin);
-            Log.d("test", "----------------------------------------");
-
-//            double angleRad = Math.toRadians(30);
-//            float cos = (float) Math.cos(angleRad);
-//            float sin = (float) Math.sin(angleRad);
-//            matrix.setValues(new float[]{1,0,0,0,cos,-sin,0,sin,cos});
-
-            super.applyTransformation(interpolatedTime, t);
-        }
-    }
 
 
 }
