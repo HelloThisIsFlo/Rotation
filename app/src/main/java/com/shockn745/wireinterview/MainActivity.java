@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void applyAnimation(View v){
-        MyAnimation myAnimation = new MyAnimation();
+        MyAnimation myAnimation = new MyAnimation(v);
         myAnimation.setDuration(5000);
         myAnimation.setFillAfter(true);
         myAnimation.setInterpolator(new OvershootInterpolator());
@@ -66,6 +66,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public class MyAnimation extends Animation {
+
+        float centerX;
+        float centerY;
+
+        public MyAnimation(View view) {
+            centerX = Math.abs((view.getRight() - view.getLeft()) / 2);
+            centerY = Math.abs((view.getTop() - view.getBottom()) / 2);
+        }
 
         @Override
         protected void applyTransformation(float interpolatedTime,
@@ -81,10 +89,14 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("test", "Value : " + v);
             }
             Log.d("test", "-----------");
-            double angleRad = Math.toRadians(20*interpolatedTime);
+            double angleRad = Math.toRadians(90*interpolatedTime);
             float cos = (float) Math.cos(angleRad);
             float sin = (float) Math.sin(angleRad);
             matrix.setValues(new float[]{cos, -sin, 0, sin, cos, 0, 0, 0, 1});
+
+            matrix.preTranslate(-centerX, -centerY);
+            matrix.postTranslate(centerX, centerY);
+
             Log.d("test", "cos = " + cos);
             Log.d("test", "sin = " + sin);
             Log.d("test", "----------------------------------------");
