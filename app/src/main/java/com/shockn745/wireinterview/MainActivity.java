@@ -1,9 +1,14 @@
 package com.shockn745.wireinterview;
 
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.OvershootInterpolator;
+import android.view.animation.RotateAnimation;
+import android.view.animation.Transformation;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 
@@ -39,15 +44,7 @@ public class MainActivity extends AppCompatActivity {
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (progress <= 90) {
-                    mMinion1.setRotationY(progress);
-                    mMinion1.setVisibility(View.VISIBLE);
-                    mMinion2.setVisibility(View.GONE);
-                } else if (progress > 90) {
-                    mMinion2.setRotationY(180 + progress);
-                    mMinion1.setVisibility(View.GONE);
-                    mMinion2.setVisibility(View.VISIBLE);
-                }
+                applyAnimation(mMinion1);
             }
 
 
@@ -58,5 +55,48 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+    private void applyAnimation(View v){
+        MyAnimation myAnimation = new MyAnimation();
+        myAnimation.setDuration(5000);
+        myAnimation.setFillAfter(true);
+        myAnimation.setInterpolator(new OvershootInterpolator());
+
+        v.startAnimation(myAnimation);
+    }
+
+    public class MyAnimation extends Animation {
+
+        @Override
+        protected void applyTransformation(float interpolatedTime,
+                                           Transformation t) {
+
+            final Matrix matrix = t.getMatrix();
+
+//            matrix.postRotate(30);
+            float[] values = new float[9];
+            matrix.getValues(values);
+
+            for (float v : values) {
+                Log.d("test", "Value : " + v);
+            }
+            Log.d("test", "-----------");
+            double angleRad = Math.toRadians(20*interpolatedTime);
+            float cos = (float) Math.cos(angleRad);
+            float sin = (float) Math.sin(angleRad);
+            matrix.setValues(new float[]{cos, -sin, 0, sin, cos, 0, 0, 0, 1});
+            Log.d("test", "cos = " + cos);
+            Log.d("test", "sin = " + sin);
+            Log.d("test", "----------------------------------------");
+
+//            double angleRad = Math.toRadians(30);
+//            float cos = (float) Math.cos(angleRad);
+//            float sin = (float) Math.sin(angleRad);
+//            matrix.setValues(new float[]{1,0,0,0,cos,-sin,0,sin,cos});
+
+            super.applyTransformation(interpolatedTime, t);
+        }
+    }
+
 
 }
