@@ -1,14 +1,10 @@
 package com.shockn745.wireinterview;
 
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.OvershootInterpolator;
-import android.view.animation.RotateAnimation;
-import android.view.animation.Transformation;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -38,10 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Set the camera distance to give a more natural flip movement
         // And to respect the demo video
-        float scale = this.getResources().getDisplayMetrics().density;
-        float distance = 4000;
-        mMinion1.setCameraDistance(distance * scale);
-        mMinion2.setCameraDistance(distance * scale);
+
 
 
         mSeekBar.setMax(180);
@@ -75,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
     private void applyAnimation(View v){
         CustomRotationAnimation myAnimation = new CustomRotationAnimation(v);
         myAnimation.setDuration(5000);
+        myAnimation.setInterpolator(new LinearInterpolator());
+        myAnimation.setRepeatCount(Animation.INFINITE);
 
         v.startAnimation(myAnimation);
     }
