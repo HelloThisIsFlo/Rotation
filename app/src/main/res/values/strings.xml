@@ -3,4 +3,15 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <!-- Drawer items -->
+    <string name="drawer_main_demo">Main demo</string>
+    <string name="drawer_gyro_demo">Gyroscope demo</string>
+    <string name="drawer_material_demo">Material demo</string>
+
+    <!-- Accessibility -->
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="minion1_description">Image of Minion</string>
+    <string name="minion2_description">Different image of Minion</string>
 </resources>

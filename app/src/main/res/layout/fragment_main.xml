@@ -19,13 +19,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:layout_above="@+id/rotation_seek_bar"/>
+        android:layout_above="@+id/rotation_seek_bar"
+        android:contentDescription="@string/minion1_description" />
     <ImageView
         android:id="@+id/minion_2_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:layout_above="@+id/rotation_seek_bar"/>
+        android:layout_above="@+id/rotation_seek_bar"
+        android:contentDescription="@string/minion2_description" />
     <SeekBar
         android:id="@+id/rotation_seek_bar"
         android:layout_width="match_parent"
