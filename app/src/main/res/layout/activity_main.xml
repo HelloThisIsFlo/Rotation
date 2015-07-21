@@ -20,14 +20,12 @@
         android:id="@+id/minion_1_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/full_res_minion_1"
         android:scaleType="fitXY"
         android:layout_above="@+id/rotation_seek_bar"/>
     <ImageView
         android:id="@+id/minion_2_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/full_res_minion_2"
         android:scaleType="fitXY"
         android:layout_above="@+id/rotation_seek_bar"/>
     <SeekBar
@@ -38,13 +36,6 @@
         />
     <SeekBar
         android:id="@+id/saturation_seek_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/rotate_button"
-        />
-    <!-- TODO REMOVE : Test Button -->
-    <Button
-        android:id="@+id/rotate_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

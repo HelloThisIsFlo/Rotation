@@ -1,9 +1,12 @@
 package com.shockn745.wireinterview;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
@@ -21,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     private AnimatedMinion mMinion1;
     private AnimatedMinion mMinion2;
     private SeekBar mRotationSeekBar;
-    private Button mTestButton;
     private SeekBar mSaturationSeekBar;
 
 
@@ -34,14 +36,13 @@ public class MainActivity extends AppCompatActivity {
         ImageView mMinion1ImageView = (ImageView) findViewById(R.id.minion_1_image_view);
         ImageView mMinion2ImageView = (ImageView) findViewById(R.id.minion_2_image_view);
         mRotationSeekBar = (SeekBar) findViewById(R.id.rotation_seek_bar);
-        mTestButton = (Button) findViewById(R.id.rotate_button);
         mSaturationSeekBar = (SeekBar) findViewById(R.id.saturation_seek_bar);
 
         // Init AnimatedMinions
         mMinion1 = new AnimatedMinion();
         mMinion2 = new AnimatedMinion();
-        initAnimatedMinion(mMinion1, mMinion1ImageView, false, -1);
-        initAnimatedMinion(mMinion2, mMinion2ImageView, true, -1);
+        initAnimatedMinion(mMinion1, mMinion1ImageView, false, R.drawable.full_res_minion_1);
+        initAnimatedMinion(mMinion2, mMinion2ImageView, true, R.drawable.full_res_minion_2);
 
         // Set up the rotationSeekBar
         // Max value (in degree * 100)
@@ -88,12 +89,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        // TODO REMOVE TEST : Test button
-        mTestButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
     }
 
     /**
@@ -155,8 +150,19 @@ public class MainActivity extends AppCompatActivity {
                         minion.getImageView()
                                 .getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
+                        // TEST
+                        logOriginalBitmapDimensions(resId);
+                        logImageViewDimensions(minion.getImageView());
+
                         // Load drawable
-                        //TODO
+                        Bitmap bitmap = BitmapHelper.decodeSampledBitmapFromResource(
+                                getResources(),
+                                resId,
+                                minion.getImageView().getWidth(),
+                                minion.getImageView().getHeight()
+                        );
+
+                        minion.getImageView().setImageBitmap(bitmap);
 
                         // Create the animation
                         createCustomRotationAnimation(minion);
@@ -167,18 +173,25 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    private void initImageViewSource(ImageView imageView, int resId) {
-//        BitmapFactory.Options options = new BitmapFactory.Options();
-//        options.inJustDecodeBounds = true;
-//        BitmapFactory.decodeResource(getResources(), resId, options);
-//        int imageHeight = options.outHeight;
-//        int imageWidth = options.outWidth;
-//        String imageType = options.outMimeType;
-//        Log.d(LOG_TAG, "--------- IMAGE --------");
-//        Log.d(LOG_TAG, "Height : " + imageHeight);
-//        Log.d(LOG_TAG, "Width : " + imageWidth);
-//        Log.d(LOG_TAG, "Type : " + imageType);
-//        Log.d(LOG_TAG, "------ END - IMAGE -----");
-//    }
+    private void logOriginalBitmapDimensions(int resId) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(getResources(), resId, options);
+        int imageHeight = options.outHeight;
+        int imageWidth = options.outWidth;
+        String imageType = options.outMimeType;
+        Log.d(LOG_TAG, "--------- IMAGE --------");
+        Log.d(LOG_TAG, "Height : " + imageHeight);
+        Log.d(LOG_TAG, "Width : " + imageWidth);
+        Log.d(LOG_TAG, "Type : " + imageType);
+        Log.d(LOG_TAG, "------ END - IMAGE -----");
+    }
+
+    private void logImageViewDimensions(ImageView view) {
+        Log.d(LOG_TAG, "--------- VIEW ---------");
+        Log.d(LOG_TAG, "Height : " + view.getHeight());
+        Log.d(LOG_TAG, "Width : " + view.getWidth());
+        Log.d(LOG_TAG, "------ END - VIEW ------");
+    }
 
 }

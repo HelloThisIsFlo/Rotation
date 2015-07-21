@@ -3,6 +3,7 @@ package com.shockn745.wireinterview;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 /**
  * Helper class used to load bitmap drawable in the memory at the perfect size
@@ -10,6 +11,8 @@ import android.graphics.BitmapFactory;
  * @author Google
  */
 public class BitmapHelper {
+
+    private final static String LOG_TAG = BitmapHelper.class.getSimpleName();
 
     /**
      * Loads a Bitmap in memory at the perfect size depending on the view containing it.
@@ -65,6 +68,7 @@ public class BitmapHelper {
             }
         }
 
+        Log.d(LOG_TAG, "SampleSize : " + inSampleSize);
         return inSampleSize;
     }
 }
