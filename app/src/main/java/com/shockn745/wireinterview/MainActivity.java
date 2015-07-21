@@ -99,7 +99,9 @@ public class MainActivity extends AppCompatActivity {
         
         // Set up the saturation Seekbar
         final ColorMatrix colorMatrix = new ColorMatrix();
-        mSaturationSeekBar.setMax(1000);
+        final int maxProgress = 1000;
+        mSaturationSeekBar.setMax(maxProgress);
+        mSaturationSeekBar.setProgress(maxProgress);
         mSaturationSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
