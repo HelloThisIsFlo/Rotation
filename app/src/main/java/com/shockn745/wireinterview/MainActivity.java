@@ -1,5 +1,10 @@
 package com.shockn745.wireinterview;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -8,13 +13,16 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SensorEventListener{
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     ImageView mMinion1;
     ImageView mMinion2;
     SeekBar mSeekBar;
+
+    SensorManager mSensorManager;
+    Sensor mSensor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
         float distance = 4000;
         mMinion1.setCameraDistance(distance * scale);
         mMinion2.setCameraDistance(distance * scale);
+
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        // TODO : Prevent launch on old APIs (display toast)
+        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR);
+
 
         mSeekBar.setMax(180);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -58,5 +71,25 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_FASTEST);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mSensorManager.unregisterListener(this);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        mMinion1.setRotation(event.values[2]*180);
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 
 }
