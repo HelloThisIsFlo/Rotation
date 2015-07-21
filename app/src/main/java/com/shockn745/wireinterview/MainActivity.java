@@ -1,5 +1,7 @@
 package com.shockn745.wireinterview;
 
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -21,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageView mMinion2;
     private SeekBar mRotationSeekBar;
     private Button mTestButton;
+    private SeekBar mSaturationSeekBar;
+
 
     private CustomRotationAnimation mMinion1Animation;
     private CustomRotationAnimation mMinion2Animation;
@@ -36,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         mMinion2 = (ImageView) findViewById(R.id.minion_2_image_view);
         mRotationSeekBar = (SeekBar) findViewById(R.id.rotation_seek_bar);
         mTestButton = (Button) findViewById(R.id.rotate_button);
+        mSaturationSeekBar = (SeekBar) findViewById(R.id.saturation_seek_bar);
 
 
         // Init & start the animation after layout
@@ -92,6 +97,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        
+        // Set up the saturation Seekbar
+        final ColorMatrix colorMatrix = new ColorMatrix();
+        mSaturationSeekBar.setMax(1000);
+        mSaturationSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                colorMatrix.setSaturation(((float) progress) / 1000);
+                ColorMatrixColorFilter filter = new ColorMatrixColorFilter(colorMatrix);
+
+                mMinion1.setColorFilter(filter);
+                mMinion2.setColorFilter(filter);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
 
         // TODO REMOVE TEST : Test button
         mTestButton.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
             }
         });
-
     }
 
     /**

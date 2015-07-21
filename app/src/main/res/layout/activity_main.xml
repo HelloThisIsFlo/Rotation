@@ -34,6 +34,12 @@
         android:id="@+id/rotation_seek_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/saturation_seek_bar"
+        />
+    <SeekBar
+        android:id="@+id/saturation_seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/rotate_button"
         />
     <Button
