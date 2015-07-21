@@ -29,8 +29,6 @@
         android:layout_height="match_parent"
         android:src="@drawable/temp_image_2"
         android:scaleType="fitXY"
-        android:rotationY="180"
-        android:visibility="gone"
         android:layout_above="@+id/rotation_seek_bar"/>
     <SeekBar
         android:id="@+id/rotation_seek_bar"

@@ -20,8 +20,11 @@ public class CustomRotationAnimation extends Animation {
     private Camera camera;
     private View mView;
 
-    public CustomRotationAnimation(View view) {
+    private boolean mStartHidden;
+
+    public CustomRotationAnimation(View view, boolean startHidden) {
         mView = view;
+        mStartHidden = startHidden;
 
         // Get the center of the view
         centerX = Math.abs((view.getRight() - view.getLeft()) / 2);
@@ -73,12 +76,29 @@ public class CustomRotationAnimation extends Animation {
         matrix.preTranslate(-centerX, -centerY);
         matrix.postTranslate(centerX, centerY);
 
+        // Hide/Display view for half the time of the animation
+        if (interpolatedTime > 0.25 && interpolatedTime < 0.75) {
+            if (mStartHidden) {
+                t.setAlpha(1);
+            } else {
+                t.setAlpha(0);
+            }
+        } else {
+            if (mStartHidden) {
+                t.setAlpha(0);
+            } else {
+                t.setAlpha(1);
+            }
+        }
+
         super.applyTransformation(interpolatedTime, t);
 
         // Added because the view would not update properly otherwise
         // TODO : Better solution ?
         mView.invalidate();
     }
+
+
 
 
 
