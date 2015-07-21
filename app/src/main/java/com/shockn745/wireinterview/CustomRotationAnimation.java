@@ -32,7 +32,7 @@ public class CustomRotationAnimation extends Animation {
         // Move camera away to give a more natural flip movement
         // And to respect the demo video
         // Hardcoded value, could have put in setting resource file, but no point here.
-        camera.setLocation(0, 0, 5000);
+        camera.setLocation(0, 0, 50);
     }
 
     @Override
