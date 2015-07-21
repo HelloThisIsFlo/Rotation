@@ -71,14 +71,16 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         // Set up the rotationSeekBar
-        // Max value (in degree)
-        mRotationSeekBar.setMax(180);
+        // Max value (in degree * 100)
+        // Degree * 100 : For smoother scrolling
+        mRotationSeekBar.setMax(18000);
         mRotationSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 // Set rotation (in degree)
-                mMinion1.setRotation(progress);
-                mMinion2.setRotation(progress);
+                float rotation = ((float) progress) / 100;
+                mMinion1.setRotation(rotation);
+                mMinion2.setRotation(rotation);
             }
 
             @Override
