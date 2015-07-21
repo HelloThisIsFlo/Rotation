@@ -20,6 +20,9 @@ public class CustomRotationAnimation extends Animation {
     private Camera camera;
     private View mView;
 
+    private int mZRotationAngle;
+    private int previousZRotationAngle = 0;
+
     public CustomRotationAnimation(View view) {
         mView = view;
 
@@ -68,16 +71,25 @@ public class CustomRotationAnimation extends Animation {
          *
          * cf. Euler angles & rotation matrices
          */
-        matrix.preRotate(-originalRotation);
-        matrix.postRotate(originalRotation);
+        matrix.preRotate(-mZRotationAngle);
+        matrix.postRotate(mZRotationAngle);
         matrix.preTranslate(-centerX, -centerY);
         matrix.postTranslate(centerX, centerY);
+        previousZRotationAngle = mZRotationAngle;
 
         super.applyTransformation(interpolatedTime, t);
 
         // Added because the view would not update properly otherwise
         // TODO : Better solution ?
         mView.invalidate();
+    }
+
+    /**
+     * Set the Z angle
+     * @param angle Z angle
+     */
+    public void setZRotation(int angle) {
+        mZRotationAngle = angle;
     }
 
 

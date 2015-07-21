@@ -3,6 +3,7 @@ package com.shockn745.wireinterview;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     private SeekBar mRotationSeekBar;
     private Button mTestButton;
 
+    private CustomRotationAnimation mAnimation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +35,26 @@ public class MainActivity extends AppCompatActivity {
         mTestButton = (Button) findViewById(R.id.rotate_button);
 
 
+        // Init & start the animation after layout
+        mMinion1.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        // gets called after layout has been done but before display
+                        // so getTop/Bottom/etc != 0
+
+                        // Remove listener after first layout
+                        mMinion1.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        mAnimation = new CustomRotationAnimation(mMinion1);
+                        mAnimation.setDuration(5000);
+                        mAnimation.setInterpolator(new LinearInterpolator());
+                        mAnimation.setRepeatCount(Animation.INFINITE);
+
+                        mMinion1.startAnimation(mAnimation);
+                    }
+                });
+
+
         // Set up the rotationSeekBar
         // Max value (in degree)
         mRotationSeekBar.setMax(180);
@@ -39,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 // Set rotation (in degree)
-                mMinion1.setRotation(progress);
+                mAnimation.setZRotation(progress);
             }
 
             @Override
