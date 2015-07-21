@@ -16,8 +16,8 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageView mMinion1;
     private ImageView mMinion2;
-    private SeekBar mSeekBar;
-    private Button mRotateButton;
+    private SeekBar mRotationSeekBar;
+    private Button mTestButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,22 +28,19 @@ public class MainActivity extends AppCompatActivity {
         // Find views by id
         mMinion1 = (ImageView) findViewById(R.id.minion_1_image_view);
         mMinion2 = (ImageView) findViewById(R.id.minion_2_image_view);
-        mSeekBar = (SeekBar) findViewById(R.id.rotation_seek_bar);
-        mRotateButton = (Button) findViewById(R.id.rotate_button);
+        mRotationSeekBar = (SeekBar) findViewById(R.id.rotation_seek_bar);
+        mTestButton = (Button) findViewById(R.id.rotate_button);
 
 
-        // Set the camera distance to give a more natural flip movement
-        // And to respect the demo video
-
-
-
-        mSeekBar.setMax(180);
-        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        // Set up the rotationSeekBar
+        // Max value (in degree)
+        mRotationSeekBar.setMax(180);
+        mRotationSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // Set rotation (in degree)
                 mMinion1.setRotation(progress);
             }
-
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -56,24 +53,18 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        mRotateButton.setOnClickListener(new View.OnClickListener() {
+        mTestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                applyAnimation(mMinion1);
+                CustomRotationAnimation myAnimation = new CustomRotationAnimation(mMinion1);
+                myAnimation.setDuration(5000);
+                myAnimation.setInterpolator(new LinearInterpolator());
+                myAnimation.setRepeatCount(Animation.INFINITE);
+
+                mMinion1.startAnimation(myAnimation);
             }
         });
 
     }
-
-    private void applyAnimation(View v){
-        CustomRotationAnimation myAnimation = new CustomRotationAnimation(v);
-        myAnimation.setDuration(5000);
-        myAnimation.setInterpolator(new LinearInterpolator());
-        myAnimation.setRepeatCount(Animation.INFINITE);
-
-        v.startAnimation(myAnimation);
-    }
-
-
 
 }
