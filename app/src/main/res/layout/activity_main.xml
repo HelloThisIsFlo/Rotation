@@ -3,44 +3,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_gradient"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:clipChildren="false"
     tools:context=".MainActivity">
-    <!--
-    clipChildren is set to false to prevent the flipping ImageView from disappearing
-    when the rotation makes it exceed the bounds of the parent layout.
-    -->
 
-    <!-- According to the demo video, fitXY is the scaletype to use -->
-    <ImageView
-        android:id="@+id/minion_1_image_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:layout_above="@+id/rotation_seek_bar"/>
-    <ImageView
-        android:id="@+id/minion_2_image_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        android:layout_above="@+id/rotation_seek_bar"/>
-    <SeekBar
-        android:id="@+id/rotation_seek_bar"
+    <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/saturation_seek_bar"
-        />
-    <SeekBar
-        android:id="@+id/saturation_seek_bar"
+        android:id="@+id/toolbar"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:background="@color/primary_dark_material_dark"
+        android:elevation="8dp"/>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        />
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:clipChildren="false"
+        android:layout_below="@id/toolbar"
+        >
+        <!--
+        clipChildren is set to false to prevent the flipping ImageView from disappearing
+        when the rotation makes it exceed the bounds of the parent layout.
+        -->
+
+        <!-- According to the demo video, fitXY is the scaletype to use -->
+        <ImageView
+            android:id="@+id/minion_1_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:layout_above="@+id/rotation_seek_bar"/>
+        <ImageView
+            android:id="@+id/minion_2_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:layout_above="@+id/rotation_seek_bar"/>
+        <SeekBar
+            android:id="@+id/rotation_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/saturation_seek_bar"
+            />
+        <SeekBar
+            android:id="@+id/saturation_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            />
 
 
 
+    </RelativeLayout>
 </RelativeLayout>
