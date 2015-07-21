@@ -93,8 +93,19 @@ public class CustomRotationAnimation extends Animation {
 
         super.applyTransformation(interpolatedTime, t);
 
-        // Added because the view would not update properly otherwise
-        // TODO : Better solution ?
+        /*
+         * Added "invalidate" because the view would not update properly otherwise
+         * TODO : Better solution ?
+         *
+         * This solution works and doesn't "seem" to affect performances, but it might be a hack.
+         * After researching this problem, I couldn't find why the view wouldn't update otherwise.
+         *
+         * That's where I would reach for a colleague to give me a hint on why some ghosting effect
+         * appear if we do not refresh the whole view.
+         *
+         * Seems to be a problem of wrong hardware overlays.
+         * (The debug option clearly shows the problem)
+         */
         mView.invalidate();
     }
 
