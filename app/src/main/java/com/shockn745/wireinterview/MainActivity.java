@@ -1,5 +1,7 @@
 package com.shockn745.wireinterview;
 
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -35,19 +37,18 @@ public class MainActivity extends AppCompatActivity {
         mMinion1.setCameraDistance(distance * scale);
         mMinion2.setCameraDistance(distance * scale);
 
-        mSeekBar.setMax(180);
+
+        final ColorMatrix colorMatrix = new ColorMatrix();
+
+        mSeekBar.setMax(1000);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (progress <= 90) {
-                    mMinion1.setRotationY(progress);
-                    mMinion1.setVisibility(View.VISIBLE);
-                    mMinion2.setVisibility(View.GONE);
-                } else if (progress > 90) {
-                    mMinion2.setRotationY(180 + progress);
-                    mMinion1.setVisibility(View.GONE);
-                    mMinion2.setVisibility(View.VISIBLE);
-                }
+                colorMatrix.setSaturation(((float) progress)/1000);
+
+                ColorMatrixColorFilter filter = new ColorMatrixColorFilter(colorMatrix);
+                mMinion1.setColorFilter(filter);
+                mMinion2.setColorFilter(filter);
             }
 
 
