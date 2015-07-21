@@ -5,6 +5,8 @@ import android.widget.ImageView;
 /**
  * Simple class to hold an ImageView and its related animation
  * Add some functions to make code more readable
+ *
+ * @author Florian Kempenich
  */
 public class AnimatedMinion {
 

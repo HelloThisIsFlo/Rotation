@@ -1,25 +1,27 @@
 package com.shockn745.wireinterview;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 
 
+/**
+ * Main activity of the application
+ *
+ * @author Florian Kempenich
+ */
 public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final int ANIM_DURATION = 6000;
+    private static final int ROTATION_SPAN = 270;
 
     private AnimatedMinion mMinion1;
     private AnimatedMinion mMinion2;
@@ -47,12 +49,13 @@ public class MainActivity extends AppCompatActivity {
         // Set up the rotationSeekBar
         // Max value (in degree * 100)
         // Degree * 100 : For smoother scrolling
-        mRotationSeekBar.setMax(18000);
+        mRotationSeekBar.setMax(ROTATION_SPAN*100);
+        mRotationSeekBar.setProgress(ROTATION_SPAN*100/2);
         mRotationSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 // Set rotation (in degree)
-                float rotation = ((float) progress) / 100;
+                float rotation = -(ROTATION_SPAN/2) + ((float) progress) / 100;
                 mMinion1.getImageView().setRotation(rotation);
                 mMinion2.getImageView().setRotation(rotation);
             }
@@ -150,10 +153,6 @@ public class MainActivity extends AppCompatActivity {
                         minion.getImageView()
                                 .getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-                        // TEST
-                        logOriginalBitmapDimensions(resId);
-                        logImageViewDimensions(minion.getImageView());
-
                         // Load drawable
                         Bitmap bitmap = BitmapHelper.decodeSampledBitmapFromResource(
                                 getResources(),
@@ -170,28 +169,6 @@ public class MainActivity extends AppCompatActivity {
                         startAnimationsIfReady();
                     }
                 });
-
-    }
-
-    private void logOriginalBitmapDimensions(int resId) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(getResources(), resId, options);
-        int imageHeight = options.outHeight;
-        int imageWidth = options.outWidth;
-        String imageType = options.outMimeType;
-        Log.d(LOG_TAG, "--------- IMAGE --------");
-        Log.d(LOG_TAG, "Height : " + imageHeight);
-        Log.d(LOG_TAG, "Width : " + imageWidth);
-        Log.d(LOG_TAG, "Type : " + imageType);
-        Log.d(LOG_TAG, "------ END - IMAGE -----");
-    }
-
-    private void logImageViewDimensions(ImageView view) {
-        Log.d(LOG_TAG, "--------- VIEW ---------");
-        Log.d(LOG_TAG, "Height : " + view.getHeight());
-        Log.d(LOG_TAG, "Width : " + view.getWidth());
-        Log.d(LOG_TAG, "------ END - VIEW ------");
     }
 
 }
