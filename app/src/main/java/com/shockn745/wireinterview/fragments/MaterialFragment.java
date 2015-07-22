@@ -8,6 +8,7 @@ import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -42,6 +43,9 @@ public class MaterialFragment extends BaseFragment {
     private FloatingActionButton mRotationFAB;
     private FloatingActionButton mSaturationFAB;
 
+    private CardView mRotationCardView;
+    private CardView mSaturationCardView;
+
 
     @Nullable
     @Override
@@ -57,6 +61,8 @@ public class MaterialFragment extends BaseFragment {
         mMainFAB = (FloatingActionButton) rootView.findViewById(R.id.fab);
         mSaturationFAB = (FloatingActionButton) rootView.findViewById(R.id.fab_saturation);
         mRotationFAB = (FloatingActionButton) rootView.findViewById(R.id.fab_rotation);
+        mRotationCardView = (CardView) rootView.findViewById(R.id.card_rotation);
+        mSaturationCardView = (CardView) rootView.findViewById(R.id.card_saturation);
 
         // Set OnClickListeners
         mMainFAB.setOnClickListener(new MainFABOnClickListener());
@@ -269,14 +275,130 @@ public class MaterialFragment extends BaseFragment {
     private class RotationFABOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+            if (mRotationCardView.getVisibility() == View.INVISIBLE) {
+                // Reveal rotation seekBar
+                // Get center
+                int centerX = Math.abs(mRotationCardView.getRight());
+                int centerY = Math.abs((mRotationCardView.getTop() - mRotationCardView.getBottom()) / 2);
 
+                // Hack. mRotationCardView.getWidth() wasn't big enough
+                // TODO Implement properly
+                int radius = (int) (mRotationCardView.getWidth() * 1.3);
+
+                Animator revealAnim = ViewAnimationUtils
+                        .createCircularReveal(mRotationCardView, centerX, centerY, 0, radius)
+                        .setDuration(ANIMATION_DURATION * 2);
+                Interpolator interpolator = AnimationUtils.loadInterpolator(
+                        getActivity(),
+                        android.R.interpolator.fast_out_slow_in
+                );
+                revealAnim.setInterpolator(interpolator);
+
+                mRotationCardView.setVisibility(View.VISIBLE);
+
+                revealAnim.start();
+            } else {
+                // Hide rotation SeekBar
+                // Reveal rotation seekBar
+                // Get center
+                int centerX = Math.abs(mRotationCardView.getRight());
+                int centerY = Math.abs((mRotationCardView.getTop() - mRotationCardView.getBottom()) / 2);
+
+                // Hack. mRotationCardView.getWidth() wasn't big enough
+                // TODO Implement properly
+                int radius = (int) (mRotationCardView.getWidth() * 1.3);
+
+                Animator revealAnim = ViewAnimationUtils
+                        .createCircularReveal(mRotationCardView, centerX, centerY, radius, 0)
+                        .setDuration(ANIMATION_DURATION * 2);
+                Interpolator interpolator = AnimationUtils.loadInterpolator(
+                        getActivity(),
+                        android.R.interpolator.fast_out_slow_in
+                );
+                revealAnim.setInterpolator(interpolator);
+
+                revealAnim.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mRotationCardView.setVisibility(View.INVISIBLE);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {}
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {}
+                    @Override
+                    public void onAnimationStart(Animator animation) {}
+                });
+
+
+                revealAnim.start();
+            }
         }
     }
 
     private class SaturationFABOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+            if (mSaturationCardView.getVisibility() == View.INVISIBLE) {
+                // Reveal rotation seekBar
+                // Get center
+                int centerX = Math.abs(mSaturationCardView.getRight());
+                int centerY = Math.abs((mSaturationCardView.getTop() - mSaturationCardView.getBottom()) / 2);
 
+                // Hack. mRotationCardView.getWidth() wasn't big enough
+                // TODO Implement properly
+                int radius = (int) (mSaturationCardView.getWidth() * 1.3);
+
+                Animator revealAnim = ViewAnimationUtils
+                        .createCircularReveal(mSaturationCardView, centerX, centerY, 0, radius)
+                        .setDuration(ANIMATION_DURATION * 2);
+                Interpolator interpolator = AnimationUtils.loadInterpolator(
+                        getActivity(),
+                        android.R.interpolator.fast_out_slow_in
+                );
+                revealAnim.setInterpolator(interpolator);
+
+                mSaturationCardView.setVisibility(View.VISIBLE);
+
+                revealAnim.start();
+            } else {
+                // Hide rotation SeekBar
+                // Reveal rotation seekBar
+                // Get center
+                int centerX = Math.abs(mSaturationCardView.getRight());
+                int centerY = Math.abs((mSaturationCardView.getTop() - mSaturationCardView.getBottom()) / 2);
+
+                // Hack. mRotationCardView.getWidth() wasn't big enough
+                // TODO Implement properly
+                int radius = (int) (mSaturationCardView.getWidth() * 1.3);
+
+                Animator revealAnim = ViewAnimationUtils
+                        .createCircularReveal(mSaturationCardView, centerX, centerY, radius, 0)
+                        .setDuration(ANIMATION_DURATION * 2);
+                Interpolator interpolator = AnimationUtils.loadInterpolator(
+                        getActivity(),
+                        android.R.interpolator.fast_out_slow_in
+                );
+                revealAnim.setInterpolator(interpolator);
+
+                revealAnim.addListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mSaturationCardView.setVisibility(View.INVISIBLE);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {}
+                    @Override
+                    public void onAnimationRepeat(Animator animation) {}
+                    @Override
+                    public void onAnimationStart(Animator animation) {}
+                });
+
+
+                revealAnim.start();
+            }
         }
     }
 
