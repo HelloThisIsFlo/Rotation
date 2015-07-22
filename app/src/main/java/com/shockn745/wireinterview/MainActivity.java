@@ -15,6 +15,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.shockn745.wireinterview.fragments.MainFragment;
+
 
 /**
  * Main activity of the application
