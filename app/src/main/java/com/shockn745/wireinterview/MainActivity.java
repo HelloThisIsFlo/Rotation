@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
         // Init AnimatedMinions
         mMinion1 = new AnimatedMinion();
         mMinion2 = new AnimatedMinion();
-        initAnimatedMinion(mMinion1, mMinion1ImageView, false, R.drawable.full_res_minion_1);
-        initAnimatedMinion(mMinion2, mMinion2ImageView, true, R.drawable.full_res_minion_2);
+        initAnimatedMinion(mMinion1, mMinion1ImageView, false);
+        initAnimatedMinion(mMinion2, mMinion2ImageView, true);
 
         // Set up the rotationSeekBar
         // Max value (in degree * 100)
@@ -129,13 +129,11 @@ public class MainActivity extends AppCompatActivity {
      * @param minion animatedMinion to be initialized
      * @param imageView imageView to add to the AnimatedMinion
      * @param startHidden true if starts animation hidden
-     * @param resId resource id of the drawable
      */
     private void initAnimatedMinion(
             final AnimatedMinion minion,
             ImageView imageView,
-            boolean startHidden,
-            final int resId){
+            boolean startHidden){
 
         // Initialization - Fist part
         minion.setImageView(imageView);
@@ -152,16 +150,6 @@ public class MainActivity extends AppCompatActivity {
                         // Remove listener after first layout
                         minion.getImageView()
                                 .getViewTreeObserver().removeOnGlobalLayoutListener(this);
-
-                        // Load drawable
-                        Bitmap bitmap = BitmapHelper.decodeSampledBitmapFromResource(
-                                getResources(),
-                                resId,
-                                minion.getImageView().getWidth(),
-                                minion.getImageView().getHeight()
-                        );
-
-                        minion.getImageView().setImageBitmap(bitmap);
 
                         // Create the animation
                         createCustomRotationAnimation(minion);
