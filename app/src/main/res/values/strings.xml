@@ -14,4 +14,5 @@
     <string name="drawer_close">Close</string>
     <string name="minion1_description">Image of Minion</string>
     <string name="minion2_description">Different image of Minion</string>
+    <string name="api_18">API 18 or greater is required for this demo</string>
 </resources>

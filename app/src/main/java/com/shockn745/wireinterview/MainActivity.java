@@ -3,6 +3,7 @@ package com.shockn745.wireinterview;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -15,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.shockn745.wireinterview.fragments.GyroFragment;
 import com.shockn745.wireinterview.fragments.MainFragment;
 
 
@@ -94,17 +96,22 @@ public class MainActivity extends AppCompatActivity implements
      * @param itemId Id of the clicked navigation item
      */
     private void updateFragment(final int itemId) {
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
         switch (itemId) {
             case R.id.drawer_main_demo:
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                MainFragment fragment = new MainFragment();
-                fragmentTransaction.replace(R.id.content_frame, fragment);
+                fragmentTransaction.replace(R.id.content_frame, new MainFragment());
                 fragmentTransaction.commit();
                 break;
 
             case R.id.drawer_gyro_demo:
-                Toast.makeText(this, "Implement gyro demo", Toast.LENGTH_SHORT).show();
+                if (Build.VERSION.SDK_INT >= 18) {
+                    fragmentTransaction.replace(R.id.content_frame, new GyroFragment());
+                    fragmentTransaction.commit();
+                } else {
+                    Toast.makeText(this, R.string.api_18, Toast.LENGTH_SHORT).show();
+                }
                 break;
 
             case R.id.drawer_material_demo:
