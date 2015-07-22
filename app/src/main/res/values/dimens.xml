@@ -2,4 +2,8 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- Dimen to provide animations with values in dp -->
+    <dimen name="rotation_translation">122dp</dimen>
+    <dimen name="saturation_translation">64dp</dimen>
 </resources>

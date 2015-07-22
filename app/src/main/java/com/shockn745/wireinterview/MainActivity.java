@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements
             public void run() {
                 updateFragment(itemId);
             }
-        }, DRAWER_CLOSE_DELAY_MS*2);
+        }, (int) (DRAWER_CLOSE_DELAY_MS*1.5));
         return true;
     }
 
