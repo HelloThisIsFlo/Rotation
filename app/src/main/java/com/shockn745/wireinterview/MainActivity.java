@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.shockn745.wireinterview.fragments.GyroFragment;
 import com.shockn745.wireinterview.fragments.MainFragment;
+import com.shockn745.wireinterview.fragments.MaterialFragment;
 
 
 /**
@@ -115,7 +116,12 @@ public class MainActivity extends AppCompatActivity implements
                 break;
 
             case R.id.drawer_material_demo:
-                Toast.makeText(this, "Implement material demo", Toast.LENGTH_SHORT).show();
+                if (Build.VERSION.SDK_INT >= 21) {
+                    fragmentTransaction.replace(R.id.content_frame, new MaterialFragment());
+                    fragmentTransaction.commit();
+                } else {
+                    Toast.makeText(this, R.string.api_21, Toast.LENGTH_SHORT).show();
+                }
                 break;
 
             default:
