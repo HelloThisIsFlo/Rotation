@@ -12,7 +12,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -30,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements
     private static final long DRAWER_CLOSE_DELAY_MS = 250;
     private static final String NAV_ITEM_ID = "navItemId";
 
-    private final Handler mDrawerActionHandler = new Handler();
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private int mNavItemId;
@@ -49,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
         }
 
         // Find Drawer by id
@@ -76,12 +75,22 @@ public class MainActivity extends AppCompatActivity implements
                 R.string.drawer_open,
                 R.string.drawer_close);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        mDrawerToggle.syncState();
 
         // Update main fragment
         updateFragment(mNavItemId);
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    /**
+     * Update the fragment on main activity
+     * @param itemId Id of the clicked navigation item
+     */
     private void updateFragment(final int itemId) {
         switch (itemId) {
             case R.id.drawer_main_demo:
@@ -113,9 +122,12 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        if (item.getItemId() == android.support.v7.appcompat.R.id.home) {
-            return mDrawerToggle.onOptionsItemSelected(item);
+        // Pass the event to ActionBarDrawerToggle, if it returns
+        // true, then it has handled the app icon touch event
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -126,11 +138,22 @@ public class MainActivity extends AppCompatActivity implements
      */
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
-        //TODO check meaning
+        // Gravity start is used to determine which drawer to select
+        // Here : start (left side for "regular" device configuration : left -> right)
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         }
-        updateFragment(menuItem.getItemId());
+
+        menuItem.setChecked(true);
+
+        // Update fragment after drawer closed
+        final int itemId = menuItem.getItemId();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateFragment(itemId);
+            }
+        }, DRAWER_CLOSE_DELAY_MS*2);
         return true;
     }
 
@@ -140,7 +163,8 @@ public class MainActivity extends AppCompatActivity implements
      */
     @Override
     public void onBackPressed() {
-        //TODO check meaning
+        // Gravity start is used to determine which drawer to select
+        // Here : start (left side for "regular" device configuration : left -> right)
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
         } else {

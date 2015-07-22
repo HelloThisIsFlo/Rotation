@@ -6,4 +6,6 @@
     android:layout_height="172dp"
     android:background="@drawable/background_gradient">
 
+    <!-- Add picture myself in round with frame -->
+
 </LinearLayout>
