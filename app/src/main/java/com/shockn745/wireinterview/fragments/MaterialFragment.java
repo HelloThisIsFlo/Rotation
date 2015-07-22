@@ -302,7 +302,7 @@ public class MaterialFragment extends BaseFragment {
                 revealAnim.start();
             } else {
                 // Hide rotation SeekBar
-                Animator hideAnim = createSeekBarCardAnimator(mSaturationCardView, true);
+                Animator hideAnim = createSeekBarCardAnimator(mRotationCardView, true);
                 hideAnim.start();
             }
         }
